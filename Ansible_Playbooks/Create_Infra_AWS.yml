@@ -20,12 +20,12 @@
         - create
 
     - name: delete VPC
-        amazon.aws.ec2_vpc_net:
-          state: absent
-          name: VPC_Public_Apps
-          profile: "{{ profile_aws }}"
-          region: "{{ region }}"
-        tags:
-          - destroy
+      amazon.aws.ec2_vpc_net:
+        state: absent
+        name: VPC_Public_Apps
+        profile: "{{ profile_aws }}"
+        region: "{{ region }}"
+      tags:
+        - destroy
 
 
