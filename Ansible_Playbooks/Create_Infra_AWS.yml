@@ -25,6 +25,7 @@
         name: VPC_Public_Apps
         profile: "{{ profile_aws }}"
         region: "{{ region }}"
+        cidr_block: 10.10.0.0/16
       tags:
         - destroy
 
