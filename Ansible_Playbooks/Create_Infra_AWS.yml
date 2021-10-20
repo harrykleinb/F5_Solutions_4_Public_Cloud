@@ -4,6 +4,9 @@
   connection: local
   gather_facts: False
 
+  vars:
+    cidr_vpc : "10.10.0.0/16"
+
   tasks:
 
     - name: create VPC
