@@ -5,17 +5,17 @@
   gather_facts: False
 
   vars:
-    cidr_vpc : "10.10.0.0/16"
+    var_cidr_vpc : "10.10.0.0/16"
 
   tasks:
 
     - name: create VPC
       amazon.aws.ec2_vpc_net:
         state: present
-        name: VPC_Public_Apps
+        name: "{{ owner }}_VPC_Public_Apps"
         profile: "{{ profile_aws }}"
         region: "{{ region }}"
-        cidr_block: 10.10.0.0/16
+        cidr_block: "{{ var_cidr_vpc }}"
         tags:
           Owner: "{{ owner }}"
           Source: ansible
@@ -25,10 +25,10 @@
     - name: delete VPC
       amazon.aws.ec2_vpc_net:
         state: absent
-        name: VPC_Public_Apps
+        name: "{{ owner }}_VPC_Public_Apps"
         profile: "{{ profile_aws }}"
         region: "{{ region }}"
-        cidr_block: 10.10.0.0/16
+        cidr_block: "{{ var_cidr_vpc }}"
       tags:
         - destroy
 
