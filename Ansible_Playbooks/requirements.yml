@@ -1,0 +1,9 @@
+---
+
+# Install collections from ansible-galaxy repository
+collections:
+- amazon.aws
+- f5networks.f5_modules
+- community.aws
+- community.general
+- nginxinc.nginx_core
