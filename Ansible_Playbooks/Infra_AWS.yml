@@ -105,7 +105,7 @@
 
 
     - name: Get Sunet ID AZ A        #needed to create NAT Gateway
-      command: aws ec2 describe-subnets --profile {{ profile_aws }} --region {{ region }} --filter Name=tag:Name,Values=nap_subnet_ext_az_a --query subnet[].id --output text
+      command: aws ec2 describe-subnets --profile {{ profile_aws }} --region {{ region }} --filter Name=tag:Name,Values={{ owner }}_nap_subnet_ext_az_a --query subnets[].SubnetId --output text
       register: subnet_id_az_a
       tags:
         - create
