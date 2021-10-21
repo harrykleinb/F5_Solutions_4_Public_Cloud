@@ -104,7 +104,10 @@
         - destroy
 
 
-
+   - debug: var=nap_subnet_ext_az_a.stdout
+      tags:
+        - create
+        - destroy
 
     - name: Create nat gateway in AZ A
       amazon.aws.ec2_vpc_nat_gateway:
