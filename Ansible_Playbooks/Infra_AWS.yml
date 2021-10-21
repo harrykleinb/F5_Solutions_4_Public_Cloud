@@ -48,9 +48,9 @@
     - name: Create subnet external for NGINX+ in AZ A
       amazon.aws.ec2_vpc_subnet:
         state: present
-        vpc_id: {{ vpc_id.stdout }}
+        vpc_id: "{{ vpc_id.stdout }}"
         az: "{{ region }}a"
-        cidr: {{ var_cidr_nginx_ext }}
+        cidr: "{{ var_cidr_nginx_ext }}"
         tags:
           Name: "{{ owner }}_nap_subnet_ext"
           Owner: "{{ owner }}"
@@ -62,9 +62,9 @@
     - name: Remove subnet external for NGINX+ in AZ A
       amazon.aws.ec2_vpc_subnet:
         state: absent
-        vpc_id: {{ vpc_id.stdout }}
+        vpc_id: "{{ vpc_id.stdout }}"
         az: "{{ region }}a"
-        cidr: {{ var_cidr_nginx_ext }}
+        cidr: "{{ var_cidr_nginx_ext }}"
       tags:
         - destroy
 
