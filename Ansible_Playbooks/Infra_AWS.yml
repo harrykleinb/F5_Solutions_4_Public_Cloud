@@ -49,6 +49,32 @@
         - destroy
 
 
+    - name: Create Internet Gateway
+      amazon.aws.ec2_vpc_igw:
+        state: present
+        profile: "{{ profile_aws }}"
+        vpc_id: "{{ vpc_id.stdout }}"
+        region: "{{ region }}"
+        tags:
+          Name: "{{ owner }}_IGW"
+          Owner: "{{ owner }}"
+          Source: ansible
+      tags:
+        - create
+
+
+    - name: Delete Internet Gateway
+      amazon.aws.ec2_vpc_igw:
+        state: absent
+        profile: "{{ profile_aws }}"
+        vpc_id: "{{ vpc_id.stdout }}"
+        region: "{{ region }}"
+      tags:
+        - destroy
+
+
+
+
     - name: Create subnet external for NGINX+ in AZ A
       amazon.aws.ec2_vpc_subnet:
         state: present
@@ -177,4 +203,5 @@
         region: "{{ region }}"
       tags:
         - destroy
+
 
