@@ -6,6 +6,8 @@
 
   vars:
     var_cidr_vpc : "10.42.0.0/16"
+    var_cidr_nginx_ext : "10.42.10.0/24"
+    var_cidr_nginx_int : "10.42.20.0/24"
 
   tasks:
 
@@ -42,4 +44,27 @@
       tags:
         - create
 
+
+    - name: Create subnet external for NGINX+ in AZ A
+      amazon.aws.ec2_vpc_subnet:
+        state: present
+        vpc_id: {{ vpc_id }}
+        az: {{ region }}a"
+        cidr: { { var_cidr_nginx_ext } }
+        tags:
+          Name: "{{ owner }}_nap_subnet_ext"
+          Owner: "{{ owner }}"
+          Source: ansible
+      register: database_subnet
+      tags:
+        - create
+
+    - name: Remove subnet external for NGINX+ in AZ A
+      amazon.aws.ec2_vpc_subnet:
+        state: absent
+        vpc_id: {{ vpc_id }}
+        az: {{ region }}a"
+        cidr: { { var_cidr_nginx_ext } }
+      tags:
+        - destroy
 
