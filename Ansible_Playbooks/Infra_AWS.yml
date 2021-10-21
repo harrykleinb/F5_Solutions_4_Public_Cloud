@@ -75,6 +75,35 @@
 
 
 
+    - name: Get Route Table ID        #needed to add default route to the main table of the VPC
+      command: aws ec2 describe-route-tables --profile {{ profile_aws }} --region {{ region }} --filter Name=vpc-id,Values={{ vpc_id.stdout }} --query RouteTables[].RouteTableId --output text
+      register: RouteTable_id
+      tags:
+        - create
+        - destroy
+
+    - debug: var=RouteTable_id.stdout
+      tags:
+        - create
+        - destroy
+
+
+
+    - name: Add Default Route to the Route Table of the VPC
+      amazon.aws.ec2_vpc_route_table:
+        state: present
+        profile: "{{ profile_aws }}"
+        vpc_id: "{{ vpc_id.stdout }}"
+        region: "{{ region }}"
+        lookup: id
+        route_table_id: "{{ RouteTable_id.stdout }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igw.gateway_id }}"
+      register: public_route_table
+
+
+
     - name: Create subnet external for NGINX+ in AZ A
       amazon.aws.ec2_vpc_subnet:
         state: present
