@@ -49,8 +49,8 @@
       amazon.aws.ec2_vpc_subnet:
         state: present
         vpc_id: {{ vpc_id }}
-        az: {{ region }}a"
-        cidr: { { var_cidr_nginx_ext } }
+        az: "{{ region }}a"
+        cidr: {{ var_cidr_nginx_ext }}
         tags:
           Name: "{{ owner }}_nap_subnet_ext"
           Owner: "{{ owner }}"
@@ -63,8 +63,8 @@
       amazon.aws.ec2_vpc_subnet:
         state: absent
         vpc_id: {{ vpc_id }}
-        az: {{ region }}a"
-        cidr: { { var_cidr_nginx_ext } }
+        az: "{{ region }}a"
+        cidr: {{ var_cidr_nginx_ext }}
       tags:
         - destroy
 
