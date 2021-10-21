@@ -104,7 +104,14 @@
         - destroy
 
 
-   - debug: var=nap_subnet_ext_az_a.stdout
+    - name: Get Sunet ID AZ A        #needed to create NAT Gateway
+      command: aws ec2 describe-subnets --profile {{ profile_aws }} --region {{ region }} --filter Name=tag:Name,Values=nap_subnet_ext_az_a --query subnet.id --output text
+      register: subnet_id_az_a
+      tags:
+        - create
+        - destroy
+
+    - debug: var=subnet_id_az_a.stdout
       tags:
         - create
         - destroy
@@ -113,7 +120,7 @@
       amazon.aws.ec2_vpc_nat_gateway:
         state: present
         profile: "{{ profile_aws }}"
-        subnet_id: "{{ nap_subnet_ext_az_a[].id }}"
+        subnet_id: "{{ subnet_id_az_a.stdout }}"
         region: "{{ region }}"
         tags:
           Name: "{{ owner }}_nat_gw_az_a"
