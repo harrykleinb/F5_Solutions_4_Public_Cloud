@@ -59,6 +59,7 @@
           Name: "{{ owner }}_IGW"
           Owner: "{{ owner }}"
           Source: ansible
+      register: igw
       tags:
         - create
 
@@ -71,7 +72,6 @@
         region: "{{ region }}"
       tags:
         - destroy
-
 
 
 
@@ -126,81 +126,6 @@
         region: "{{ region }}"
         az: "{{ region }}b"
         cidr: "{{ var_cidr_nginx_ext_az_b }}"
-      tags:
-        - destroy
-
-
-    - name: Get Sunet ID AZ A        #needed to create NAT Gateway
-      command: aws ec2 describe-subnets --profile {{ profile_aws }} --region {{ region }} --filter Name=tag:Name,Values={{ owner }}_nap_subnet_ext_az_a --query Subnets[].SubnetId --output text
-      register: subnet_id_az_a
-      tags:
-        - create
-        - destroy
-
-    - debug: var=subnet_id_az_a.stdout
-      tags:
-        - create
-        - destroy
-
-    - name: Create nat gateway in AZ A
-      amazon.aws.ec2_vpc_nat_gateway:
-        state: present
-        profile: "{{ profile_aws }}"
-        subnet_id: "{{ subnet_id_az_a.stdout }}"
-        region: "{{ region }}"
-        if_exist_do_not_create: yes
-        tags:
-          Name: "{{ owner }}_nat_gw_az_a"
-          Owner: "{{ owner }}"
-          Source: ansible
-      register: nat_gateway_az_a
-      tags:
-        - create
-
-
-    - name: Remove nat gateway in AZ A
-      amazon.aws.ec2_vpc_nat_gateway:
-        state: absent
-        profile: "{{ profile_aws }}"
-        subnet_id: "{{ subnet_id_az_a.stdout }}"
-        region: "{{ region }}"
-      tags:
-        - destroy
-
-    - name: Get Sunet ID AZ B        #needed to create NAT Gateway
-      command: aws ec2 describe-subnets --profile {{ profile_aws }} --region {{ region }} --filter Name=tag:Name,Values={{ owner }}_nap_subnet_ext_az_b --query Subnets[].SubnetId --output text
-      register: subnet_id_az_b
-      tags:
-        - create
-        - destroy
-
-    - debug: var=subnet_id_az_b.stdout
-      tags:
-        - create
-        - destroy
-
-    - name: Create nat gateway in AZ B
-      amazon.aws.ec2_vpc_nat_gateway:
-        state: present
-        profile: "{{ profile_aws }}"
-        subnet_id: "{{ subnet_id_az_b.stdout }}"
-        region: "{{ region }}"
-        if_exist_do_not_create: yes
-        tags:
-          Name: "{{ owner }}_nat_gw_az_b"
-          Owner: "{{ owner }}"
-          Source: ansible
-      register: nat_gateway_az_b
-      tags:
-        - create
-
-
-    - name: Remove nat gateway in AZ B
-      amazon.aws.ec2_vpc_nat_gateway:
-        state: absent
-        profile: "{{ profile_aws }}"
-        subnet_id: "{{ subnet_id_az_b.stdout }}"
-        region: "{{ region }}"
       tags:
         - destroy
 
