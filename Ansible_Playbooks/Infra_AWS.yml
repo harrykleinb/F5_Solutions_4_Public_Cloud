@@ -37,18 +37,16 @@
     - name: Get VPC ID        #needed to create aws resources
       command: aws ec2 describe-vpcs --profile {{ profile_aws }} --region {{ region }} --filter Name=tag:Name,Values={{ owner }}_VPC_Public_Apps --query Vpcs[].VpcId --output text
       register: vpc_id
-      tags:
-        - create
 
     - debug: var=vpc_id.stdout
-      tags:
-        - create
+
 
 
     - name: Create subnet external for NGINX+ in AZ A
       amazon.aws.ec2_vpc_subnet:
         state: present
-        vpc_id: "{{ vpc_id.stdout }}"
+        vpc_id: "{{ vpc_id }}"
+        region: "{{ region }}"
         az: "{{ region }}a"
         cidr: "{{ var_cidr_nginx_ext }}"
         tags:
@@ -62,7 +60,8 @@
     - name: Remove subnet external for NGINX+ in AZ A
       amazon.aws.ec2_vpc_subnet:
         state: absent
-        vpc_id: "{{ vpc_id.stdout }}"
+        vpc_id: "{{ vpc_id }}"
+        region: "{{ region }}"
         az: "{{ region }}a"
         cidr: "{{ var_cidr_nginx_ext }}"
       tags:
