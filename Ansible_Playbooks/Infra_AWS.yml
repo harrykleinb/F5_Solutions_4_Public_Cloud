@@ -27,7 +27,7 @@
     - name: delete VPC
       amazon.aws.ec2_vpc_net:
         state: absent
-        name: "{{ owner }}_VPC_Public_Apps"
+        name: "{{ owner }}_VPC_Public_Zone"
         profile: "{{ profile_aws }}"
         region: "{{ region }}"
         cidr_block: "{{ var_cidr_vpc }}"
