@@ -55,7 +55,7 @@
           Name: "{{ owner }}_nap_subnet_ext"
           Owner: "{{ owner }}"
           Source: ansible
-      register: database_subnet
+      register: nap_subnet_ext
       tags:
         - create
 
