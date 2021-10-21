@@ -34,12 +34,18 @@
       tags:
         - destroy
 
+
     - name: Get VPC ID        #needed to create aws resources
       command: aws ec2 describe-vpcs --profile {{ profile_aws }} --region {{ region }} --filter Name=tag:Name,Values={{ owner }}_VPC_Public_Apps --query Vpcs[].VpcId --output text
       register: vpc_id
+      tags:
+        - create
+        - destroy
 
     - debug: var=vpc_id.stdout
-
+      tags:
+        - create
+        - destroy
 
 
     - name: Create subnet external for NGINX+ in AZ A
