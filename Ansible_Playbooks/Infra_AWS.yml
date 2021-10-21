@@ -122,6 +122,7 @@
         profile: "{{ profile_aws }}"
         subnet_id: "{{ subnet_id_az_a.stdout }}"
         region: "{{ region }}"
+        if_exist_do_not_create: yes
         tags:
           Name: "{{ owner }}_nat_gw_az_a"
           Owner: "{{ owner }}"
@@ -158,6 +159,7 @@
         profile: "{{ profile_aws }}"
         subnet_id: "{{ subnet_id_az_b.stdout }}"
         region: "{{ region }}"
+        if_exist_do_not_create: yes
         tags:
           Name: "{{ owner }}_nat_gw_az_b"
           Owner: "{{ owner }}"
