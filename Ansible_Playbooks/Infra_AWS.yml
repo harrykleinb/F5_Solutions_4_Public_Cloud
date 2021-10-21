@@ -6,7 +6,8 @@
 
   vars:
     var_cidr_vpc : "10.42.0.0/16"
-    var_cidr_nginx_ext : "10.42.10.0/24"
+    var_cidr_nginx_ext_az_a : "10.42.10.0/24"
+    var_cidr_nginx_ext_az_b : "10.42.11.0/24"
     var_cidr_nginx_int : "10.42.20.0/24"
 
   tasks:
@@ -55,12 +56,12 @@
         vpc_id: "{{ vpc_id.stdout }}"
         region: "{{ region }}"
         az: "{{ region }}a"
-        cidr: "{{ var_cidr_nginx_ext }}"
+        cidr: "{{ var_cidr_nginx_ext_az_a }}"
         tags:
-          Name: "{{ owner }}_nap_subnet_ext"
+          Name: "{{ owner }}_nap_subnet_ext_az_a"
           Owner: "{{ owner }}"
           Source: ansible
-      register: nap_subnet_ext
+      register: nap_subnet_ext_az_a
       tags:
         - create
 
@@ -71,7 +72,51 @@
         vpc_id: "{{ vpc_id.stdout }}"
         region: "{{ region }}"
         az: "{{ region }}a"
-        cidr: "{{ var_cidr_nginx_ext }}"
+        cidr: "{{ var_cidr_nginx_ext_az_a }}"
       tags:
         - destroy
+
+    - name: Create subnet external for NGINX+ in AZ B
+      amazon.aws.ec2_vpc_subnet:
+        state: present
+        profile: "{{ profile_aws }}"
+        vpc_id: "{{ vpc_id.stdout }}"
+        region: "{{ region }}"
+        az: "{{ region }}b"
+        cidr: "{{ var_cidr_nginx_ext_az_b }}"
+        tags:
+          Name: "{{ owner }}_nap_subnet_ext_az_b"
+          Owner: "{{ owner }}"
+          Source: ansible
+      register: nap_subnet_ext_az_b
+      tags:
+        - create
+
+    - name: Remove subnet external for NGINX+ in AZ B
+      amazon.aws.ec2_vpc_subnet:
+        state: absent
+        profile: "{{ profile_aws }}"
+        vpc_id: "{{ vpc_id.stdout }}"
+        region: "{{ region }}"
+        az: "{{ region }}b"
+        cidr: "{{ var_cidr_nginx_ext_az_b }}"
+      tags:
+        - destroy
+
+
+
+
+    - name: Create nat gateway in AZ A
+      amazon.aws.ec2_vpc_nat_gateway:
+        state: present
+        profile: "{{ profile_aws }}"
+        subnet_id: "{{ nap_subnet_ext_az_a[].id }}"
+        region: "{{ region }}"
+        tags:
+          Name: "{{ owner }}_nat_gw_az_a"
+          Owner: "{{ owner }}"
+          Source: ansible
+      register: nat_gateway_az_a
+      tags:
+        - create
 
