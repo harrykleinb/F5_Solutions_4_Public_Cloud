@@ -182,7 +182,7 @@
     - name: Create EKS Cluster
       command: eksctl create cluster --name "{{ owner }}_eks_cluster" --version 1.21 --region "{{ region }}" --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
       register: eks_cluster
-      until: eks_cluster.finished
+      until: eks_cluster.rc == 0
       delay: 10
       retries: 100
       tags:
