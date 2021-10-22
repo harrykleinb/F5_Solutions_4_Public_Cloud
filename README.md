@@ -4,11 +4,14 @@
 Requirements:
 
 Ansible
-aws cli
+aws cli, kubectl, and eksctl
 
 eksctl: 
 needed for creation and management of the EKS Cluster.
 installation steps: https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html
 
-kubectl
+1) run install_requirements.sh
+2) run run_project.sh
+3) 
+
 
