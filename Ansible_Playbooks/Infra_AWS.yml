@@ -167,7 +167,7 @@
         profile: "{{ profile_aws }}"
         name: "{{ owner }}_EKS_Role"
         region: "{{ region }}"
-        assume_role_policy_document: "{{ lookup('files','policy_role.json') }}"
+        assume_role_policy_document: "{{ lookup('Files','policy_eks_assume_role.json') }}"
         managed_policies:
           - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
           - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
