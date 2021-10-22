@@ -180,17 +180,10 @@
         - create
 
     - name: Create EKS Cluster
-      community.aws.aws_eks_cluster:
-        state: present
-        profile: "{{ profile_aws }}"
-        region: "{{ region }}"
-        name: "{{ owner }}_EKS_Cluster"
-        role_arn: "arn:aws:iam::{{ var_aws_account }}:role/{{ owner }}_eks_role"
-        subnets:
-          - subnet-aaaa1111
-        security_groups:
-          - my_eks_sg
-          - sg-abcd1234
-        wait: yes
-        register: eks_cluster
-
+      command: eksctl create cluster --name "{{ owner }}_eks_cluster" --version 1.21 --region "{{ region }}" --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
+      register: eks_cluster
+      until: eks_cluster.finished
+      delay: 10
+      retries: 100
+      tags:
+        - create
