@@ -161,3 +161,29 @@
         - destroy
 
 
+    - name: Create an IAM Role for the EKS Cluster
+      community.aws.iam_role:
+        state: present
+        profile: "{{ profile_aws }}"
+        name: "{{ owner }}_EKS_Role"
+        region: "{{ region }}"
+        assume_role_policy_document: "{{ lookup('files','policy_role.json') }}"
+        managed_policies:
+          - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+          - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
+
+    - name: Create EKS Cluster
+      community.aws.aws_eks_cluster:
+        state: present
+        profile: "{{ profile_aws }}"
+        region: "{{ region }}"
+        name: "{{ owner }}_EKS_Cluster"
+        role_arn: my_eks_role
+        subnets:
+          - subnet-aaaa1111
+        security_groups:
+          - my_eks_sg
+          - sg-abcd1234
+        wait: yes
+        register: eks_cluster
+
