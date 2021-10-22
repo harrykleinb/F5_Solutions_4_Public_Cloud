@@ -5,6 +5,7 @@
   gather_facts: False
 
   vars:
+    var_aws_account : "643019619955"
     var_cidr_vpc : "10.42.0.0/16"
     var_cidr_nginx_ext_az_a : "10.42.10.0/24"
     var_cidr_nginx_ext_az_b : "10.42.11.0/24"
@@ -165,12 +166,18 @@
       community.aws.iam_role:
         state: present
         profile: "{{ profile_aws }}"
-        name: "{{ owner }}_EKS_Role"
+        name: "{{ owner }}_eks_role"
         region: "{{ region }}"
         assume_role_policy_document: "{{ lookup('Files','policy_eks_assume_role.json') }}"
         managed_policies:
           - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
           - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
+        tags:
+          Owner: "{{ owner }}"
+          Source: ansible
+      register: iam_eks_role
+      tags:
+        - create
 
     - name: Create EKS Cluster
       community.aws.aws_eks_cluster:
@@ -178,7 +185,7 @@
         profile: "{{ profile_aws }}"
         region: "{{ region }}"
         name: "{{ owner }}_EKS_Cluster"
-        role_arn: my_eks_role
+        role_arn: "arn:aws:iam::{{ var_aws_account }}:role/{{ owner }}_eks_role"
         subnets:
           - subnet-aaaa1111
         security_groups:
