@@ -164,8 +164,6 @@
         name: "{{ owner }}_eks_role"
         region: "{{ region }}"
         delete_instance_profile: true
-        managed_policies: [None]
-        purge_polices: true
       register: delete_iam_eks_role
       tags:
         - destroy
