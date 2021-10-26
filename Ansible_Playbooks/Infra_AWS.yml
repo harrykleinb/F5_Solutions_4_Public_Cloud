@@ -187,3 +187,13 @@
       retries: 100
       tags:
         - create
+
+
+    - name: Remove EKS Cluster
+      command: eksctl delete cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --region "{{ region }}"
+      register: delete_eks_cluster
+      until: delete_eks_cluster.rc == 0
+      delay: 10
+      retries: 100
+      tags:
+        - destroy
