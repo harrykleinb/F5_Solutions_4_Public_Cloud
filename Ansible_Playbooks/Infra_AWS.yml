@@ -147,6 +147,12 @@
         - create
 
 
+    - name: Update Kubeconfig
+      command: aws eks update-kubeconfig --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --region "{{ region }}"
+      register: eks_kubeconfig
+
+
+
     - name: Delete the EKS Cluster
       command: eksctl delete cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --region "{{ region }}"
       register: delete_eks_cluster
