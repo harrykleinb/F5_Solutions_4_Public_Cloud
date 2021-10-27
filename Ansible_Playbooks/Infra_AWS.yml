@@ -4,12 +4,13 @@
   connection: local
   gather_facts: False
 
-  vars:
-    var_aws_account : "643019619955"
-    var_cidr_vpc : "10.42.0.0/16"
-    var_cidr_nginx_ext_az_a : "10.42.10.0/24"
-    var_cidr_nginx_ext_az_b : "10.42.11.0/24"
-    var_cidr_nginx_int : "10.42.20.0/24"
+#  vars:
+#    var_aws_account : "643019619955"
+#    var_cidr_vpc : "10.42.0.0/16"
+#    var_cidr_nginx_ext_az_a : "10.42.10.0/24"
+#    var_cidr_nginx_ext_az_b : "10.42.11.0/24"
+#    var_cidr_nginx_int : "10.42.20.0/24"
+
 
   tasks:
 
@@ -147,7 +148,7 @@
         - create
 
 
-    - name: Update Kubeconfig
+    - name: Update Kubeconfig to enable to connect to the EKS Cluster
       command: aws eks update-kubeconfig --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --region "{{ region }}"
       register: eks_kubeconfig
 
