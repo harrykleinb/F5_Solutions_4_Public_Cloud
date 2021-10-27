@@ -13,7 +13,6 @@
 
 
   tasks:
-
     - name: create VPC
       amazon.aws.ec2_vpc_net:
         state: present
