@@ -14,10 +14,6 @@
 
   tasks:
 
-    - name: PAUSE
-      pause:
-        seconds: 1
-
     - name: create VPC
       amazon.aws.ec2_vpc_net:
         state: present
