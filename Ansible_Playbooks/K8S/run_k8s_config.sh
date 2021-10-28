@@ -40,7 +40,6 @@ kubectl create secret docker-registry regcred --docker-server=private-registry.n
 kubectl get secret regcred --output=yaml -n nginx-ingress
 
 
-
 #Deploy the Ingress Controller
 kubectl apply -f ./K8S/deployment/nginx-plus-ingress.yaml
 
