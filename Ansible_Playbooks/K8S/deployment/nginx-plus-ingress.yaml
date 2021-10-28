@@ -21,6 +21,8 @@ spec:
       containers:
       - image: nginx-plus-ingress:2.0.2
         imagePullPolicy: IfNotPresent
+        imagePullSecrets:
+        - name: regcred
         name: nginx-plus-ingress
         ports:
         - name: http
