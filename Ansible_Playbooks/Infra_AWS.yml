@@ -153,6 +153,22 @@
       register: eks_kubeconfig
 
 
+    - name: Create a namespace and a service account for the Ingress controller
+      command: kubectl apply -f ./K8S/common/ns-and-sa.yaml
+      register: k8s_ns_and_sa
+
+
+    - name: Create a cluster role and cluster role binding for the service account
+      command: kubectl apply -f ./K8S/rbac/rbac.yaml
+      register: k8S_cluster_role
+
+
+    - name: Create the App Protect role and role binding
+      command: kubectl apply -f ./K8S/rbac/ap-rbac.yaml
+      register: k8S_nap_role
+
+
+
 
     - name: Delete the EKS Cluster
       command: eksctl delete cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --region "{{ region }}"

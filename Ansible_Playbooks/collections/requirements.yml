@@ -1,6 +1,6 @@
 ---
 
-# Install roles from ansible-galaxy repository
+# Install collections from ansible-galaxy repository
 collections:
 - name: amazon.aws
 - name: f5networks.f5_modules
