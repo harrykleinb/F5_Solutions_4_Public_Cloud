@@ -19,10 +19,10 @@ spec:
     spec:
       serviceAccountName: nginx-ingress
       containers:
-      - imagePullSecrets:
-        name: regcred
-      - image: nginx-plus-ingress:2.0.2
-        imagePullPolicy: IfNotPresent
+      - name: private-registry.nginx.com
+        image: nginx-plus-ingress:2.0.2
+      imagePullSecrets:
+      - name: regcred
         name: nginx-plus-ingress
         ports:
         - name: http
