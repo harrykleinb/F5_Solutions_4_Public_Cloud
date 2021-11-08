@@ -8,3 +8,16 @@ kind: ServiceAccount
 metadata:
   name: arcadia
   namespace: arcadia
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: arcadia
+subjects:
+- kind: ServiceAccount
+  name: arcadia
+  namespace: arcadia
+roleRef:
+  kind: ClusterRole
+  name: arcadia
+  apiGroup: rbac.authorization.k8s.io
