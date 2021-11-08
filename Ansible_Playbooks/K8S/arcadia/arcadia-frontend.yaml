@@ -16,7 +16,6 @@ spec:
       containers:
         - name: arcadia-frontend
           image: sorinboiaf5/arcadia-frontend
-          imagePullPolicy: Always
           ports:
             - containerPort: 80
 
