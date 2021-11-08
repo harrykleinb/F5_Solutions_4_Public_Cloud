@@ -50,3 +50,6 @@ kubectl get pods --namespace=nginx-ingress
 kubectl apply -f ./K8S/service/loadbalancer-aws-elb.yaml
 
 
+#Create a namespace and a service account for arcadia
+kubectl apply -f ./K8S/arcadia/ns-and-sa.yaml
+
