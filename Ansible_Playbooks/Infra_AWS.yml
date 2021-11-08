@@ -145,7 +145,7 @@
 #Else, we will need to scale the cluster to support additionnal PODs.
 
     - name: Create EKS Cluster
-      command: eksctl create cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --version 1.21 --region "{{ region }}" --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
+      command: eksctl create cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --version 1.21 --region "{{ region }}" --nodegroup-name standard-workers --node-type t3.small --nodes 3 --nodes-min 1 --nodes-max 4 --managed
       register: eks_cluster
       until: eks_cluster.rc == 0
       delay: 10
