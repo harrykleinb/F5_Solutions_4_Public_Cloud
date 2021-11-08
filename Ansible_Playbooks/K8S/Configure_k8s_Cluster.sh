@@ -58,6 +58,7 @@ kubectl apply -f ./K8S/service/loadbalancer-aws-elb.yaml
 #Create a namespace and a service account for arcadia
 kubectl apply -f ./K8S/arcadia/ns-and-sa.yaml
 
+#Deploy Arcadia
 kubectl apply -f ./K8S/arcadia/arcadia-frontend.yaml
 kubectl apply -f ./K8S/arcadia/arcadia-db.yaml
 kubectl apply -f ./K8S/arcadia/arcadia-login.yaml

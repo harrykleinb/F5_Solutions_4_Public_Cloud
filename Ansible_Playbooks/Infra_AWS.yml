@@ -138,6 +138,12 @@
       tags:
         - create
 
+#AWS limits the number of IPs per instance type: https://github.com/awslabs/Amazon-eks-AMI/blob/master/files/eni-max-pods.txt
+#The number of PODs per node is limited based on that max number of IP address.
+#For instance t3.micro is limited to 4 pods max, t3.small is limited to 11 pods max.
+#So, we must know in advance the number of pods we will need.
+#Else, we will need to scale the cluster to support additionnal PODs.
+
     - name: Create EKS Cluster
       command: eksctl create cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --version 1.21 --region "{{ region }}" --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
       register: eks_cluster
