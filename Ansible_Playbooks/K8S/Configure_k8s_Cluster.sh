@@ -58,27 +58,13 @@ kubectl apply -f ./K8S/service/loadbalancer-aws-elb.yaml
 #Create a namespace and a service account for arcadia
 kubectl apply -f ./K8S/arcadia/ns-and-sa.yaml
 
-#PAR-ML-00011143:Ansible_Playbooks kleinbourg$ kubectl apply -f ./K8S/arcadia/arcadia-frontend.yaml
-#deployment.apps/arcadia-frontend created
-#service/arcadia-frontend created
-#PAR-ML-00011143:Ansible_Playbooks kleinbourg$ kubectl apply -f ./K8S/arcadia/arcadia-db.yaml
-#deployment.apps/arcadia-db created
-#service/arcadia-db created
-#PAR-ML-00011143:Ansible_Playbooks kleinbourg$ kubectl apply -f ./K8S/arcadia/arcadia-login.yaml
-#deployment.apps/arcadia-login created
-#service/arcadia-login created
-#PAR-ML-00011143:Ansible_Playbooks kleinbourg$ kubectl apply -f ./K8S/arcadia/arcadia-stock_transaction.yaml
-#deployment.apps/arcadia-stock-transaction created
-#service/arcadia-stock-transaction created
-#PAR-ML-00011143:Ansible_Playbooks kleinbourg$ kubectl apply -f ./K8S/arcadia/arcadia-stocks.yaml
-#deployment.apps/arcadia-stocks created
-#service/arcadia-stocks created
-#PAR-ML-00011143:Ansible_Playbooks kleinbourg$ kubectl apply -f ./K8S/arcadia/arcadia-users.yaml
-#deployment.apps/arcadia-users created
-#service/arcadia-users created
-#PAR-ML-00011143:Ansible_Playbooks kleinbourg$ kubectl apply -f ./K8S/arcadia/arcadia-ingress.yaml
-#secret/arcadia-wildcard created
-#virtualserver.k8s.nginx.org/arcadia created
-#PAR-ML-00011143:Ansible_Playbooks kleinbourg$
+kubectl apply -f ./K8S/arcadia/arcadia-frontend.yaml
+kubectl apply -f ./K8S/arcadia/arcadia-db.yaml
+kubectl apply -f ./K8S/arcadia/arcadia-login.yaml
+kubectl apply -f ./K8S/arcadia/arcadia-stock_transaction.yaml
+kubectl apply -f ./K8S/arcadia/arcadia-stocks.yaml
+kubectl apply -f ./K8S/arcadia/arcadia-users.yaml
+kubectl apply -f ./K8S/arcadia/arcadia-ingress.yaml
+
 
 

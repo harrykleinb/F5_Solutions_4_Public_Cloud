@@ -5,7 +5,7 @@ data:
 kind: Secret
 metadata:
   name: arcadia-wildcard
-  namespace: nginx-ingress
+  namespace: arcadia
 type: kubernetes.io/tls
 
 ---
@@ -14,11 +14,11 @@ apiVersion: k8s.nginx.org/v1
 kind: VirtualServer
 metadata:
   name: arcadia
-  namespace:
+  namespace: nginx-ingress
 spec:
   host: arcadia.nginx-experience.com
   tls:
-    secret: arcadia-wildcard
+    secret: arcadia/arcadia-wildcard
     redirect:
       enable: true
   upstreams:
