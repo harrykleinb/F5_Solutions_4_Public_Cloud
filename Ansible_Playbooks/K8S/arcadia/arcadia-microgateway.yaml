@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: microgateway
+  namespace: arcadia
 spec:
   replicas: 1
   selector:
@@ -38,6 +39,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: microgateway
+  namespace: arcadia
 spec:
   selector:
     app: microgateway
