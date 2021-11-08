@@ -19,7 +19,7 @@ spec:
   tls:
     secret: arcadia-wildcard
     redirect:
-      enable: true
+      enable: false
   upstreams:
     - name: arcadia-users
       service: arcadia-users
