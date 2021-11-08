@@ -20,6 +20,8 @@ spec:
     secret: arcadia-wildcard
     redirect:
       enable: true
+      code: 301
+      basedOn: scheme
   upstreams:
     - name: arcadia-users
       service: arcadia-users
