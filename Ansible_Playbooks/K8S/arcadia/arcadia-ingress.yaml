@@ -16,7 +16,7 @@ metadata:
   name: arcadia
   namespace: nginx-ingress
 spec:
-  host: arcadia.nginx-experience.com
+  host: aa64df4404e294314bc972e2fe499f95-452193517.eu-west-2.elb.amazonaws.com
   tls:
     secret: arcadia/arcadia-wildcard
     redirect:
