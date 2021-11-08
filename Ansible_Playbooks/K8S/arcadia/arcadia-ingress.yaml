@@ -12,42 +12,43 @@ apiVersion: k8s.nginx.org/v1
 kind: VirtualServer
 metadata:
   name: arcadia
-  namespace: nginx-ingress
+  namespace: arcadia
 spec:
+  ingressClassName: nginx-ingress
   host: aa64df4404e294314bc972e2fe499f95-452193517.eu-west-2.elb.amazonaws.com
   tls:
-    secret: arcadia/arcadia-wildcard
+    secret: arcadia-wildcard
     redirect:
       enable: true
   upstreams:
     - name: arcadia-users
-      service: arcadia/arcadia-users
+      service: arcadia-users
       port: 80
     - name: arcadia-login
-      service: arcadia/arcadia-login
+      service: arcadia-login
       port: 80
     - name: arcadia-stocks
-      service: arcadia/arcadia-stocks
+      service: arcadia-stocks
       port: 80
     - name: arcadia-stock-transaction
-      service: arcadia/arcadia-stock-transaction
+      service: arcadia-stock-transaction
       port: 80
     - name: arcadia-frontend
-      service: arcadia/arcadia-frontend
+      service: arcadia-frontend
       port: 80
   routes:
     - path: /v1/user
       action:
-        pass: arcadia/arcadia-users
+        pass: arcadia-users
     - path: /v1/login
       action:
-        pass: arcadia/arcadia-login
+        pass: arcadia-login
     - path: /v1/stock
       action:
-        pass: arcadia/arcadia-stocks
+        pass: arcadia-stocks
     - path: /v1/stockt
       action:
-        pass: arcadia/arcadia-stock-transaction
+        pass: arcadia-stock-transaction
     - path: /
       action:
-        pass: arcadia/arcadia-frontend
+        pass: arcadia-frontend
