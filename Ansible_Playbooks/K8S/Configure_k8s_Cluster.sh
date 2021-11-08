@@ -49,6 +49,11 @@ kubectl get pods --namespace=nginx-ingress
 #Get Access to the Ingress Controller via AWS ELB (Classic LB)
 kubectl apply -f ./K8S/service/loadbalancer-aws-elb.yaml
 
+#Get hostname of AWS ELB
+#Public IPs are dynamic so we must use hostname to connect to the NIC
+#kubectl describe svc nginx-ingress --namespace=nginx-ingress
+#get the hostname from the field LoadBalancer Ingress
+
 
 #Create a namespace and a service account for arcadia
 kubectl apply -f ./K8S/arcadia/ns-and-sa.yaml
