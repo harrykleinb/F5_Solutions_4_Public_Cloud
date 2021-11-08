@@ -49,3 +49,4 @@ kubectl get pods --namespace=nginx-ingress
 #Get Access to the Ingress Controller via AWS ELB (Classic LB)
 kubectl apply -f ./K8S/service/loadbalancer-aws-elb.yaml
 
+
