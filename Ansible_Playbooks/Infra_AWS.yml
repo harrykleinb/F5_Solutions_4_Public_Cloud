@@ -7,23 +7,6 @@
 
   tasks:
 
-#    - name: Create an IAM Role for the EKS Cluster
-#      community.aws.iam_role:
-#        state: present
-#        profile: "{{ profile_aws }}"
-#        name: "{{ owner }}_eks_role"
-#        region: "{{ region }}"
-#        assume_role_policy_document: "{{ lookup('file','./Files/policy_eks_assume_role.json') }}"
-#        managed_policies:
-#          - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
-#          - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
-#        tags:
-#          Owner: "{{ mail }}"
-#          Source: ansible
-#      register: iam_eks_role
-#      tags:
-#        - create
-
 #AWS limits the number of IPs per instance type: https://github.com/awslabs/Amazon-eks-AMI/blob/master/files/eni-max-pods.txt
 #The number of PODs per node is limited based on that max number of IP address.
 #For instance t3.micro is limited to 4 pods max, t3.small is limited to 11 pods max.
@@ -54,17 +37,6 @@
       tags:
         - destroy
 
-#
-#    - name: Delete the IAM Role for the EKS Cluster
-#      community.aws.iam_role:
-#        state: absent
-#        profile: "{{ profile_aws }}"
-#        name: "{{ owner }}_eks_role"
-#        region: "{{ region }}"
-#        delete_instance_profile: true
-#      register: delete_iam_eks_role
-#      tags:
-#        - destroy
 
 
 
