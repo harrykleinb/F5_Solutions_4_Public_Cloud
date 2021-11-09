@@ -49,7 +49,7 @@
 
 
     - name: Delete the EKS Cluster
-      command: eksctl delete cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --region "{{ region }}"
+      command: eksctl delete cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --region "{{ region }} --wait"
       register: delete_eks_cluster
       until: delete_eks_cluster.rc == 0
       delay: 10
