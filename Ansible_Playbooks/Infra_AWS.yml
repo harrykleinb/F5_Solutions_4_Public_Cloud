@@ -47,12 +47,6 @@
         - create
 
 
-    - name: Configure the k8s Cluster with Nginx+ IC and Arcadia
-      command: ../k8s/Configure_k8s_Cluster.sh
-      tags:
-        - create
-
-
 
     - name: Delete the EKS Cluster
       command: eksctl delete cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --region "{{ region }}"
