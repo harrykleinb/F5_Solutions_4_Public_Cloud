@@ -55,6 +55,21 @@ kubectl apply -f ./k8s/service/loadbalancer-aws-elb.yaml
 #seulement la ligne avec le hostname :
 #kubectl get service nginx-ingress -n nginx-ingress |  awk {'print $1" " $2 " " $4 " " $5'} | column -t
 #get the hostname from the field LoadBalancer Ingress
+#That hostname must be used into the manifest arcadia-ingress.yaml
+#Use the method: https://stackoverflow.com/questions/48296082/how-to-set-dynamic-values-with-kubernetes-yaml-file
+
+###################
+# sample value for your variables
+#MYVARVALUE="nginx:latest"
+
+# read the yml template from a file and substitute the string
+# {{MYVARNAME}} with the value of the MYVARVALUE variable
+#template=`cat "deploy.yml.template" | sed "s/{{MYVARNAME}}/$MYVARVALUE/g"`
+
+# apply the yml with the substituted value
+#echo "$template" | kubectl apply -f -
+
+##################@
 
 
 #Create a namespace and a service account for arcadia
