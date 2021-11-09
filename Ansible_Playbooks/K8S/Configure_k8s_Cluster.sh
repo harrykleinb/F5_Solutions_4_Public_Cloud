@@ -52,6 +52,8 @@ kubectl apply -f ./K8S/service/loadbalancer-aws-elb.yaml
 #Get hostname of AWS ELB
 #Public IPs are dynamic so we must use hostname to connect to the NIC
 #kubectl describe svc nginx-ingress --namespace=nginx-ingress
+#seulement la ligne avec le hostname :
+#kubectl get service nginx-ingress -n nginx-ingress |  awk {'print $1" " $2 " " $4 " " $5'} | column -t
 #get the hostname from the field LoadBalancer Ingress
 
 
