@@ -20,7 +20,8 @@ installation steps: `https://docs.aws.amazon.com/eks/latest/userguide/eksctl.htm
 Four variables must be set into run_project.sh:
 1) profile_aws: ID of the AWS profile to use and defined into the file ~/.aws/credentials
 2) region: AWS Region where you want to deploy the infra
-3) owner: a string that will be used as a tag to identify all the objects created into AWS for you
-4) JWT: The JWT subscription token you have received with your NGINX+ license
+3) cidr_eks_vpc: the CIDR block you want to be created and used by the EKS Cluster
+4) owner and email: strings that will be used as tags to identify all the objects created into AWS for you
+5) JWT: The JWT subscription token you have received with your NGINX+ license
 
 
