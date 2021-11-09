@@ -235,3 +235,25 @@
       tags:
         - destroy
 
+
+    - name: Get EKS VPC CIDR Block      #needed to delete the VPC
+      command: aws ec2 describe-vpcs --profile {{ profile_aws }} --region {{ region }} --filter Name=tag:Name,Values=eksctl-{{ owner }}-eks-cluster-cluster/VPC --query Vpcs[].CidrBlock --output text
+      register: vpc_cidr
+      tags:
+        - destroy
+
+    - debug: var=vpc_cidr.stdout
+      tags:
+        - destroy
+
+
+   - name: delete VPC created by CFT for EKS
+      amazon.aws.ec2_vpc_net:
+        state: absent
+        name: "eksctl-{{ owner }}-eks-cluster-cluster/VPC"
+        profile: "{{ profile_aws }}"
+        region: "{{ region }}"
+        cidr_block: "{{ vpc_cidr.stdout }}"
+      tags:
+        - destroy
+
