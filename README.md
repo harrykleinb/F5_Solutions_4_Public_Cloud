@@ -7,6 +7,7 @@ Requirements:
 2) aws cli
 3) kubectl
 4) eksctl
+5) jq
 
 eksctl: 
 needed for creation and management of the EKS Cluster.
