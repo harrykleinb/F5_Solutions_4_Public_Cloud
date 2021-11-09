@@ -49,11 +49,8 @@
 
 
     - name: Delete the EKS Cluster
-      command: eksctl delete cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --region "{{ region }} --wait"
+      command: eksctl delete cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --region "{{ region }}" --wait
       register: delete_eks_cluster
-      until: delete_eks_cluster.rc == 0
-      delay: 10
-      retries: 100
       tags:
         - destroy
 
@@ -70,14 +67,4 @@
         - destroy
 
 
-    - name: delete VPC created by CFT for EKS
-      amazon.aws.ec2_vpc_net:
-        state: absent
-        name: "eksctl-{{ owner }}-eks-cluster-cluster/VPC"
-        profile: "{{ profile_aws }}"
-        region: "{{ region }}"
-        cidr_block: "{{ var_cidr_vpc }}"
-      register: delete_vpc_eks
-      tags:
-          - destroy
 
