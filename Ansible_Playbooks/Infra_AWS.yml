@@ -80,13 +80,13 @@
         - destroy
 
 
-   - name: delete VPC created by CFT for EKS
-      amazon.aws.ec2_vpc_net:
-        state: absent
-        name: "eksctl-{{ owner }}-eks-cluster-cluster/VPC"
-        profile: "{{ profile_aws }}"
-        region: "{{ region }}"
-        cidr_block: "{{ var_cidr_vpc }}"
-      tags:
-        - destroy
+     - name: delete VPC created by CFT for EKS
+        amazon.aws.ec2_vpc_net:
+          state: absent
+          name: "eksctl-{{ owner }}-eks-cluster-cluster/VPC"
+          profile: "{{ profile_aws }}"
+          region: "{{ region }}"
+          cidr_block: "{{ var_cidr_vpc }}"
+        tags:
+          - destroy
 

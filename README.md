@@ -12,7 +12,7 @@ eksctl:
 needed for creation and management of the EKS Cluster.
 installation steps: `https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html`
 
-1) launch `install_requirements.sh`
+1) launch `install_requirements.sh` for installing the Ansible Collections that will/might be needed.
 2) launch `run_project.sh`
    1) launch an ansible playbook to create an EKS cluster in AWS (can last up to 15/20 minutes.)
    2) launch configure_k8s_Cluster -> deployment of all the pods and services into the EKS cluster.
