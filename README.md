@@ -27,3 +27,7 @@ Variables which must be set into run_project.sh:
 5) JWT: The JWT subscription token you have received with your NGINX+ license
 
 
+Credentials for Arcadia:
+Username: satoshi@bitcoin.com
+Password: bitcoin
+

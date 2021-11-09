@@ -82,9 +82,3 @@ template=`cat "./k8s/arcadia/arcadia-ingress.yaml.template" | sed "s/{{hostname}
 echo "$template" | kubectl apply -f -
 
 
-
-######
-#Credentials Arcadia:
-#Username: satoshi@bitcoin.com
-#Password: bitcoin
-######
