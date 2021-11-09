@@ -46,7 +46,7 @@ kubectl apply -f ./K8S/deployment/nginx-plus-ingress.yaml
 #Check that the Ingress Controller is Running
 kubectl get pods --namespace=nginx-ingress
 
-#Get Access to the Ingress Controller via AWS ELB (Classic LB)
+#Get Access to the Ingress Controller via AWS ELB (NLB)
 kubectl apply -f ./K8S/service/loadbalancer-aws-elb.yaml
 
 #Get hostname of AWS ELB
@@ -68,4 +68,8 @@ kubectl apply -f ./K8S/arcadia/arcadia-users.yaml
 kubectl apply -f ./K8S/arcadia/arcadia-ingress.yaml
 
 
-
+######
+#Credentials Arcadia:
+#Username: satoshi@bitcoin.com
+#Password: bitcoin
+######
