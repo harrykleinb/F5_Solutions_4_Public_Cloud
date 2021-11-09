@@ -5,7 +5,6 @@
   gather_facts: False
 
   vars:
-    var_aws_account : "643019619955"
     var_cidr_vpc : "10.42.0.0/16"
 
 
@@ -22,7 +21,7 @@
           - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
           - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
         tags:
-          Owner: "{{ owner }}"
+          Owner: "{{ mail }}"
           Source: ansible
       register: iam_eks_role
       tags:
@@ -35,7 +34,7 @@
 #Else, we will need to scale the cluster to support additionnal PODs.
 
     - name: Create EKS Cluster
-      command: eksctl create cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --version 1.21 --region "{{ region }}" --vpc-cidr "{{ var_cidr_vpc }}" --tags "Owner={{ owner }},Source=ansible" --nodegroup-name standard-workers --node-type t3.small --nodes 3 --nodes-min 1 --nodes-max 4 --managed
+      command: eksctl create cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --version 1.21 --region "{{ region }}" --vpc-cidr "{{ var_cidr_vpc }}" --tags "Owner={{ mail }},Source=ansible" --nodegroup-name standard-workers --node-type t3.small --nodes 3 --nodes-min 1 --nodes-max 4 --managed
       register: eks_cluster
       until: eks_cluster.rc == 0
       delay: 10
@@ -80,13 +79,14 @@
         - destroy
 
 
-     - name: delete VPC created by CFT for EKS
-        amazon.aws.ec2_vpc_net:
-          state: absent
-          name: "eksctl-{{ owner }}-eks-cluster-cluster/VPC"
-          profile: "{{ profile_aws }}"
-          region: "{{ region }}"
-          cidr_block: "{{ var_cidr_vpc }}"
-        tags:
+    - name: delete VPC created by CFT for EKS
+      amazon.aws.ec2_vpc_net:
+        state: absent
+        name: "eksctl-{{ owner }}-eks-cluster-cluster/VPC"
+        profile: "{{ profile_aws }}"
+        region: "{{ region }}"
+        cidr_block: "{{ var_cidr_vpc }}"
+      register: delete_vpc_eks
+      tags:
           - destroy
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ansible-playbook -vvv -e profile_aws="643019619955_Users" -e region="eu-west-2" -e owner="harryk" ./Ansible_Playbooks/Infra_AWS.yml --tags create
+ansible-playbook -vvv -e profile_aws="643019619955_Users" -e region="eu-west-2" -e owner="h.kleinbourg" -e mail="h.kleinbourg@f5.com" ./Ansible_Playbooks/Infra_AWS.yml --tags create
 
 
 # var_jwt is the JWT token you've received with your nginx+ license. It will be used to deploy nginx+ from the nginx repo.
