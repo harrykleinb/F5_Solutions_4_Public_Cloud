@@ -7,119 +7,9 @@
   vars:
     var_aws_account : "643019619955"
     var_cidr_vpc : "10.42.0.0/16"
-    var_cidr_nginx_ext_az_a : "10.42.10.0/24"
-    var_cidr_nginx_ext_az_b : "10.42.11.0/24"
-    var_cidr_nginx_int : "10.42.20.0/24"
 
 
   tasks:
-
-    - name: create VPC
-      amazon.aws.ec2_vpc_net:
-        state: present
-        name: "{{ owner }}_VPC_Public_Apps"
-        profile: "{{ profile_aws }}"
-        region: "{{ region }}"
-        cidr_block: "{{ var_cidr_vpc }}"
-        tags:
-          Owner: "{{ owner }}"
-          Source: ansible
-      tags:
-        - create
-
-
-    - name: Get VPC ID        #needed to create aws resources
-      command: aws ec2 describe-vpcs --profile {{ profile_aws }} --region {{ region }} --filter Name=tag:Name,Values={{ owner }}_VPC_Public_Apps --query Vpcs[].VpcId --output text
-      register: vpc_id
-      tags:
-        - create
-        - destroy
-
-    - debug: var=vpc_id.stdout
-      tags:
-        - create
-        - destroy
-
-
-    - name: Create Internet Gateway
-      amazon.aws.ec2_vpc_igw:
-        state: present
-        profile: "{{ profile_aws }}"
-        vpc_id: "{{ vpc_id.stdout }}"
-        region: "{{ region }}"
-        tags:
-          Name: "{{ owner }}_IGW"
-          Owner: "{{ owner }}"
-          Source: ansible
-      register: igw
-      tags:
-        - create
-
-
-    - name: Get Route Table ID        #needed to add default route to the main table of the VPC
-      command: aws ec2 describe-route-tables --profile {{ profile_aws }} --region {{ region }} --filter Name=vpc-id,Values={{ vpc_id.stdout }} --query RouteTables[].RouteTableId --output text
-      register: RouteTable_id
-      tags:
-        - create
-        - destroy
-
-    - debug: var=RouteTable_id.stdout
-      tags:
-        - create
-        - destroy
-
-
-
-    - name: Add Default Route to the Route Table of the VPC
-      amazon.aws.ec2_vpc_route_table:
-        state: present
-        profile: "{{ profile_aws }}"
-        vpc_id: "{{ vpc_id.stdout }}"
-        region: "{{ region }}"
-        lookup: id
-        route_table_id: "{{ RouteTable_id.stdout }}"
-        routes:
-          - dest: 0.0.0.0/0
-            gateway_id: "{{ igw.gateway_id }}"
-      register: public_route_table
-      tags:
-        - create
-
-
-
-    - name: Create subnet external for NGINX+ in AZ A
-      amazon.aws.ec2_vpc_subnet:
-        state: present
-        profile: "{{ profile_aws }}"
-        vpc_id: "{{ vpc_id.stdout }}"
-        region: "{{ region }}"
-        az: "{{ region }}a"
-        cidr: "{{ var_cidr_nginx_ext_az_a }}"
-        tags:
-          Name: "{{ owner }}_nap_subnet_ext_az_a"
-          Owner: "{{ owner }}"
-          Source: ansible
-      register: nap_subnet_ext_az_a
-      tags:
-        - create
-
-
-    - name: Create subnet external for NGINX+ in AZ B
-      amazon.aws.ec2_vpc_subnet:
-        state: present
-        profile: "{{ profile_aws }}"
-        vpc_id: "{{ vpc_id.stdout }}"
-        region: "{{ region }}"
-        az: "{{ region }}b"
-        cidr: "{{ var_cidr_nginx_ext_az_b }}"
-        tags:
-          Name: "{{ owner }}_nap_subnet_ext_az_b"
-          Owner: "{{ owner }}"
-          Source: ansible
-      register: nap_subnet_ext_az_b
-      tags:
-        - create
-
 
     - name: Create an IAM Role for the EKS Cluster
       community.aws.iam_role:
@@ -145,7 +35,7 @@
 #Else, we will need to scale the cluster to support additionnal PODs.
 
     - name: Create EKS Cluster
-      command: eksctl create cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --version 1.21 --region "{{ region }}" --nodegroup-name standard-workers --node-type t3.small --nodes 3 --nodes-min 1 --nodes-max 4 --managed
+      command: eksctl create cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --version 1.21 --region "{{ region }}" --vpc-cidr "{{ var_cidr_vpc }}" --tags "Owner={{ owner }},Source=ansible" --nodegroup-name standard-workers --node-type t3.small --nodes 3 --nodes-min 1 --nodes-max 4 --managed
       register: eks_cluster
       until: eks_cluster.rc == 0
       delay: 10
@@ -161,11 +51,10 @@
         - create
 
 
-    - name: Configure the K8S Cluster with Nginx+ IC and Arkadia
-      command: ./K8S/Configure_k8s_Cluster.sh
+    - name: Configure the k8s Cluster with Nginx+ IC and Arcadia
+      command: ../k8s/Configure_k8s_Cluster.sh
       tags:
         - create
-
 
 
 
@@ -191,69 +80,13 @@
         - destroy
 
 
-    - name: Delete subnet external for NGINX+ in AZ B
-      amazon.aws.ec2_vpc_subnet:
-        state: absent
-        profile: "{{ profile_aws }}"
-        vpc_id: "{{ vpc_id.stdout }}"
-        region: "{{ region }}"
-        az: "{{ region }}b"
-        cidr: "{{ var_cidr_nginx_ext_az_b }}"
-      tags:
-        - destroy
-
-
-    - name: Remove subnet external for NGINX+ in AZ A
-      amazon.aws.ec2_vpc_subnet:
-        state: absent
-        profile: "{{ profile_aws }}"
-        vpc_id: "{{ vpc_id.stdout }}"
-        region: "{{ region }}"
-        az: "{{ region }}a"
-        cidr: "{{ var_cidr_nginx_ext_az_a }}"
-      tags:
-        - destroy
-
-
-    - name: Delete Internet Gateway
-      amazon.aws.ec2_vpc_igw:
-        state: absent
-        profile: "{{ profile_aws }}"
-        vpc_id: "{{ vpc_id.stdout }}"
-        region: "{{ region }}"
-      tags:
-        - destroy
-
-
-    - name: delete VPC
-      amazon.aws.ec2_vpc_net:
-        state: absent
-        name: "{{ owner }}_VPC_Public_Zone"
-        profile: "{{ profile_aws }}"
-        region: "{{ region }}"
-        cidr_block: "{{ var_cidr_vpc }}"
-      tags:
-        - destroy
-
-
-    - name: Get EKS VPC CIDR Block      #needed to delete the VPC
-      command: aws ec2 describe-vpcs --profile {{ profile_aws }} --region {{ region }} --filter Name=tag:Name,Values=eksctl-{{ owner }}-eks-cluster-cluster/VPC --query Vpcs[].CidrBlock --output text
-      register: vpc_cidr
-      tags:
-        - destroy
-
-    - debug: var=vpc_cidr.stdout
-      tags:
-        - destroy
-
-
    - name: delete VPC created by CFT for EKS
       amazon.aws.ec2_vpc_net:
         state: absent
         name: "eksctl-{{ owner }}-eks-cluster-cluster/VPC"
         profile: "{{ profile_aws }}"
         region: "{{ region }}"
-        cidr_block: "{{ vpc_cidr.stdout }}"
+        cidr_block: "{{ var_cidr_vpc }}"
       tags:
         - destroy
 

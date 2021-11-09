@@ -3,36 +3,36 @@
 # See explanations on https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-manifests/
 
 #Create a namespace and a service account for the Ingress controller
-kubectl apply -f ./K8S/common/ns-and-sa.yaml
+kubectl apply -f ./k8s/common/ns-and-sa.yaml
 
 #Create a cluster role and cluster role binding for the service account
-kubectl apply -f ./K8S/rbac/rbac.yaml
+kubectl apply -f ./k8s/rbac/rbac.yaml
 
 #Create the App Protect role and role binding
-kubectl apply -f ./K8S/rbac/ap-rbac.yaml
+kubectl apply -f ./k8s/rbac/ap-rbac.yaml
 
 #Create a secret with a TLS certificate and a key for the default server in NGINX
-kubectl apply -f ./K8S/common/default-server-secret.yaml
+kubectl apply -f ./k8s/common/default-server-secret.yaml
 
 #Create a config map for customizing NGINX configuration
-kubectl apply -f ./K8S/common/nginx-config.yaml
+kubectl apply -f ./k8s/common/nginx-config.yaml
 
 #Create an IngressClass resource
-kubectl apply -f ./K8S/common/ingress-class.yaml
+kubectl apply -f ./k8s/common/ingress-class.yaml
 
 #Create custom resource definitions for VirtualServer and VirtualServerRoute, TransportServer and Policy resources
-kubectl apply -f ./K8S/common/crds/k8s.nginx.org_virtualservers.yaml
-kubectl apply -f ./K8S/common/crds/k8s.nginx.org_virtualserverroutes.yaml
-kubectl apply -f ./K8S/common/crds/k8s.nginx.org_transportservers.yaml
-kubectl apply -f ./K8S/common/crds/k8s.nginx.org_policies.yaml
+kubectl apply -f ./k8s/common/crds/k8s.nginx.org_virtualservers.yaml
+kubectl apply -f ./k8s/common/crds/k8s.nginx.org_virtualserverroutes.yaml
+kubectl apply -f ./k8s/common/crds/k8s.nginx.org_transportservers.yaml
+kubectl apply -f ./k8s/common/crds/k8s.nginx.org_policies.yaml
 
 #Create a custom resource definition for GlobalConfiguration resource. Needed for TCP/UDP LB in NIC
-kubectl apply -f ./K8S/common/crds/k8s.nginx.org_globalconfigurations.yaml
+kubectl apply -f ./k8s/common/crds/k8s.nginx.org_globalconfigurations.yaml
 
 #Create a custom resource definition for APPolicy, APLogConf and APUserSig. Needed for NAP.
-kubectl apply -f ./K8S/common/crds/appprotect.f5.com_aplogconfs.yaml
-kubectl apply -f ./K8S/common/crds/appprotect.f5.com_appolicies.yaml
-kubectl apply -f ./K8S/common/crds/appprotect.f5.com_apusersigs.yaml
+kubectl apply -f ./k8s/common/crds/appprotect.f5.com_aplogconfs.yaml
+kubectl apply -f ./k8s/common/crds/appprotect.f5.com_appolicies.yaml
+kubectl apply -f ./k8s/common/crds/appprotect.f5.com_apusersigs.yaml
 
 
 #Create a docker-registry secret on the cluster using the JWT subscription token
@@ -41,13 +41,13 @@ kubectl get secret regcred --output=yaml -n nginx-ingress
 
 
 #Deploy the Ingress Controller
-kubectl apply -f ./K8S/deployment/nginx-plus-ingress.yaml
+kubectl apply -f ./k8s/deployment/nginx-plus-ingress.yaml
 
 #Check that the Ingress Controller is Running
 kubectl get pods --namespace=nginx-ingress
 
 #Get Access to the Ingress Controller via AWS ELB (NLB)
-kubectl apply -f ./K8S/service/loadbalancer-aws-elb.yaml
+kubectl apply -f ./k8s/service/loadbalancer-aws-elb.yaml
 
 #Get hostname of AWS ELB
 #Public IPs are dynamic so we must use hostname to connect to the NIC
@@ -58,16 +58,16 @@ kubectl apply -f ./K8S/service/loadbalancer-aws-elb.yaml
 
 
 #Create a namespace and a service account for arcadia
-kubectl apply -f ./K8S/arcadia/ns-and-sa.yaml
+kubectl apply -f ./k8s/arcadia/ns-and-sa.yaml
 
 #Deploy Arcadia
-kubectl apply -f ./K8S/arcadia/arcadia-frontend.yaml
-kubectl apply -f ./K8S/arcadia/arcadia-db.yaml
-kubectl apply -f ./K8S/arcadia/arcadia-login.yaml
-kubectl apply -f ./K8S/arcadia/arcadia-stock_transaction.yaml
-kubectl apply -f ./K8S/arcadia/arcadia-stocks.yaml
-kubectl apply -f ./K8S/arcadia/arcadia-users.yaml
-kubectl apply -f ./K8S/arcadia/arcadia-ingress.yaml
+kubectl apply -f ./k8s/arcadia/arcadia-frontend.yaml
+kubectl apply -f ./k8s/arcadia/arcadia-db.yaml
+kubectl apply -f ./k8s/arcadia/arcadia-login.yaml
+kubectl apply -f ./k8s/arcadia/arcadia-stock_transaction.yaml
+kubectl apply -f ./k8s/arcadia/arcadia-stocks.yaml
+kubectl apply -f ./k8s/arcadia/arcadia-users.yaml
+kubectl apply -f ./k8s/arcadia/arcadia-ingress.yaml
 
 
 ######
