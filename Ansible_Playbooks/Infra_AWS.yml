@@ -4,9 +4,6 @@
   connection: local
   gather_facts: False
 
-  vars:
-    var_cidr_vpc : "10.42.0.0/16"
-
 
   tasks:
 
@@ -34,7 +31,7 @@
 #Else, we will need to scale the cluster to support additionnal PODs.
 
     - name: Create EKS Cluster
-      command: eksctl create cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --version 1.21 --region "{{ region }}" --vpc-cidr "{{ var_cidr_vpc }}" --tags "Owner={{ mail }},Source=ansible" --nodegroup-name standard-workers --node-type t3.small --nodes 3 --nodes-min 1 --nodes-max 4 --managed
+      command: eksctl create cluster --profile {{ profile_aws }} --name "{{ owner }}-eks-cluster" --version 1.21 --region "{{ region }}" --vpc-cidr "{{ cidr_eks_vpc }}" --tags "Owner={{ mail }},Source=ansible" --nodegroup-name standard-workers --node-type t3.small --nodes 3 --nodes-min 1 --nodes-max 4 --managed
       register: eks_cluster
       until: eks_cluster.rc == 0
       delay: 10
